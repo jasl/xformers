@@ -176,8 +176,10 @@ def get_flash_attention2_nvcc_archs_flags(cuda_version: int):
         return []
     # Figure out default archs to target
     DEFAULT_ARCHS_LIST = ""
-    if cuda_version >= 1208:
-        DEFAULT_ARCHS_LIST = "8.0;8.6;9.0;10.0;12.0"
+    if cuda_version >= 1300:
+        DEFAULT_ARCHS_LIST = "8.0;8.6;8.9;9.0;10.0;11.0;12.0;12.1"
+    elif cuda_version >= 1208:
+        DEFAULT_ARCHS_LIST = "8.0;8.6;8.9;9.0;10.0;12.0"
     elif cuda_version >= 1108:
         DEFAULT_ARCHS_LIST = "8.0;8.6;9.0"
     elif cuda_version > 1100:
@@ -187,7 +189,7 @@ def get_flash_attention2_nvcc_archs_flags(cuda_version: int):
     else:
         return []
 
-    if os.getenv("XFORMERS_DISABLE_FLASH_ATTN", "1") != "0":
+    if os.getenv("XFORMERS_DISABLE_FLASH_ATTN_2", "1") != "0":
         return []
 
     archs_list = os.environ.get("TORCH_CUDA_ARCH_LIST", DEFAULT_ARCHS_LIST)
@@ -277,7 +279,7 @@ def get_flash_attention2_extensions(cuda_version: int, extra_compile_args):
 # FLASH-ATTENTION v3
 ######################################
 def get_flash_attention3_nvcc_archs_flags(cuda_version: int):
-    if os.getenv("XFORMERS_DISABLE_FLASH_ATTN", "0") != "0":
+    if os.getenv("XFORMERS_DISABLE_FLASH_ATTN_3", "0") != "0":
         return []
     if cuda_version < 1203:
         return []
